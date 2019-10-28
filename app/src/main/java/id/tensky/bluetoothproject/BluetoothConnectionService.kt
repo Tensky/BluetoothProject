@@ -63,7 +63,7 @@ class BluetoothConnectionService(private val context: Context) {
                 bluetoothSocket.connect()
                 Log.d(TAG, "ConnectThread: bluetoothSocket Connect sucessful")
             }catch (e: IOException){
-                Log.d(TAG, "ConnectThread: bluetoothSocket Connect failed. Closing")
+                Log.d(TAG, "ConnectThread: bluetoothSocket Connect failed. Closing : ${e.message}")
                 bluetoothSocket.close()
             }
             connected(bluetoothSocket, myDevice)
@@ -77,6 +77,7 @@ class BluetoothConnectionService(private val context: Context) {
             }
         }
     }
+
     inner class ConnectedThread() : Thread(){
         lateinit var bluetoothSocket : BluetoothSocket
         lateinit var inStream : InputStream
@@ -135,10 +136,10 @@ class BluetoothConnectionService(private val context: Context) {
 
     @Synchronized fun start(){
         Log.d(TAG, "Synchronized start ")
-        if(connectThread != null){
-            connectThread!!.cancel()
-            connectThread = null
-        }
+//        if(connectThread != null){
+//            connectThread!!.cancel()
+//            connectThread = null
+//        }
         if(acceptThread == null){
             acceptThread = AcceptThread()
             acceptThread!!.start()
